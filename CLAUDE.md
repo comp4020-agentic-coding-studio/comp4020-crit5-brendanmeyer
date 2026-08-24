@@ -25,10 +25,80 @@ ship. CI runs the same plus links, secrets and the deploy.
 `spec/README.md`, `PROCESS.md` and `reflections/README.md` are in this repo and
 say what they are for.
 
-## This file is yours
+# Shadow Copy — Project Instructions
 
-A starting point, not a rulebook: what you add to it is the harness, and the
-harness is assessed. This file and the sensors you wire into `check` carry
-across the course --- both come with you into next week's repo. The prototype
-doesn't: source, and the tests answering this week's published spec, stay
-behind. `spec/README.md` draws the line.
+## Project goal
+
+Build a small static browser puzzle game designed to be completed by a first-time player in approximately five minutes.
+
+The defining constraint is that the game must teach itself entirely through play.
+
+## Core mechanic
+
+The player moves using WASD or arrow keys.
+
+A shadow replays the player's movements approximately two seconds later.
+
+The player uses their delayed shadow to activate pressure plates, open gates, and solve spatial/timing puzzles.
+
+Later puzzles also require avoiding collision with the shadow.
+
+## Non-negotiable design constraints
+
+- No tutorial screen.
+- No how-to-play modal.
+- No gameplay instructions.
+- No explanatory text used to teach mechanics.
+- Do not use the README as a substitute for an in-game tutorial.
+- The opening screen must make the player's first action obvious through visual affordance.
+- Mechanics should be introduced through level design and feedback.
+- The game must have a clear failure state and clear ending.
+- Target total playtime: approximately five minutes.
+- Prefer depth from the core mechanic over adding more mechanics.
+
+## Game rules
+
+- Player movement is responsive and immediate.
+- Shadow reproduces the player's earlier movement after a fixed delay.
+- Player or shadow can activate pressure plates.
+- Pressure plates can control gates.
+- Player-shadow collision resets the room.
+- Hazard collision resets the room.
+- Entering an open exit completes the room.
+- Completing the final room ends the game.
+
+## Technical constraints
+
+- Fully client-side.
+- Must work on GitHub Pages.
+- No backend.
+- No database.
+- No required external API.
+- Prefer plain HTML/CSS/JavaScript unless an existing project stack suggests otherwise.
+- Keep game logic separate from rendering where practical.
+- Avoid unnecessary dependencies.
+
+## Testing
+
+At least one core game rule must have a focused automated test.
+
+Good candidates:
+
+- delayed shadow position
+- collision causes reset
+- pressure plate opens gate
+
+Tests should target deterministic game logic rather than visual rendering.
+
+## Design priorities
+
+When choosing between alternatives, prioritize:
+
+1. Learnability without words
+2. Fairness
+3. Responsive controls
+4. Clear visual feedback
+5. Interesting consequences of the shadow mechanic
+6. Small, polished scope
+
+Do not add features merely to make the project appear more complex.
