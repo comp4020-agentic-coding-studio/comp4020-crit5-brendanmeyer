@@ -40,21 +40,22 @@ const room2: RoomDef = {
 };
 
 // Room 3 — Two places at once. Plate A is a detour early in the corridor;
-// plate B sits immediately before the gate. The gate needs both — so the
-// player must have visited A recently enough that the shadow is still
-// standing on it while the player is at B/the gate.
+// plate B sits immediately before the gate. The gate needs both — walking
+// straight there from A arrives before the shadow's echo reaches A, so the
+// gate is still closed and blocks you (same bump as room 2); only once the
+// shadow reaches A while you're still parked on B does it open.
 const room3: RoomDef = {
   id: "two-places",
   bounds: FULL_BOUNDS,
   walls: corridorWalls,
   plates: [
     { id: "a", rect: { x: 150, y: 205, w: 90, h: 100 } },
-    { id: "b", rect: { x: 400, y: 205, w: 120, h: 100 } },
+    { id: "b", rect: { x: 300, y: 205, w: 150, h: 100 } },
   ],
   gates: [
     {
       id: "g2",
-      rect: { x: 470, y: CORRIDOR_TOP, w: 40, h: CORRIDOR_BOTTOM - CORRIDOR_TOP },
+      rect: { x: 394, y: CORRIDOR_TOP, w: 40, h: CORRIDOR_BOTTOM - CORRIDOR_TOP },
       requiredPlateIds: ["a", "b"],
     },
   ],
