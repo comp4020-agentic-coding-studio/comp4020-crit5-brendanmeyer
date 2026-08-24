@@ -71,20 +71,26 @@ const room3: RoomDef = {
 // a gate on the way. The return leg crosses back through ground the shadow
 // is still forward-replaying, so a head-on meeting is the natural first
 // outcome. A nook beside the crossing point gives room to step aside once
-// the player understands why it happened.
+// the player understands why it happened. The gate sits clear of both the
+// top nook and the bottom spawn pocket, with its own sealed column above
+// and below, so neither gap can be walked around it.
 const ROOM4_TOP = 190;
 const ROOM4_BOTTOM = 310;
+const ROOM4_GATE_X = 560;
 const room4: RoomDef = {
   id: "collision",
   bounds: FULL_BOUNDS,
   walls: [
     { x: 0, y: 0, w: 440, h: ROOM4_TOP },
     { x: 720, y: 0, w: CANVAS_WIDTH - 720, h: ROOM4_TOP },
+    { x: ROOM4_GATE_X, y: 0, w: 20, h: ROOM4_TOP },
     { x: 0, y: ROOM4_BOTTOM, w: 600, h: CANVAS_HEIGHT - ROOM4_BOTTOM },
     { x: 740, y: ROOM4_BOTTOM, w: CANVAS_WIDTH - 740, h: CANVAS_HEIGHT - ROOM4_BOTTOM },
   ],
   plates: [{ id: "p4", rect: { x: 700, y: 225, w: 100, h: 60 } }],
-  gates: [{ id: "g4", rect: { x: 610, y: ROOM4_TOP, w: 20, h: ROOM4_BOTTOM - ROOM4_TOP }, requiredPlateIds: ["p4"] }],
+  gates: [
+    { id: "g4", rect: { x: ROOM4_GATE_X, y: ROOM4_TOP, w: 20, h: ROOM4_BOTTOM - ROOM4_TOP }, requiredPlateIds: ["p4"] },
+  ],
   hazards: [],
   spawn: { x: 665, y: 400 },
   exit: { x: 480, y: 200, w: 60, h: 100 },
