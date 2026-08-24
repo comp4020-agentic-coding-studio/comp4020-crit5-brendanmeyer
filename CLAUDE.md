@@ -9,6 +9,17 @@ The
 publishes this deliverable's brief and spec, and this repo's name tells you
 which deliverable applies. Read both before you plan or build.
 
+## How to work in here
+
+- After changes, pause for human review (screenshot/diff) before running
+  `pnpm check` or committing — review supplements checks, not replaces them,
+  so run `pnpm check` and fix red even after sign-off, then commit only on
+  green.
+- Commit atomically: one fix, one commit (lint, bugfix, config, stray
+  generated files — each separate, even back-to-back) — a history of named,
+  specific moves is stronger process evidence than one big dump; see
+  [Your process is part of the mark](#your-process-is-part-of-the-mark).
+
 ## The link-preview card
 
 `public/card.png` (1200x630) is the image a shared link shows; `index.html`'s
