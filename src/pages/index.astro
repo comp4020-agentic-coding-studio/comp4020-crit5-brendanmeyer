@@ -6,10 +6,10 @@ import "../styles/styles.css";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COMP4020 prototype</title>
+    <title>Shadow Copy</title>
     <meta
       name="description"
-      content="Replace this with one sentence saying what this page is. A search result and a link preview both show it."
+      content="A five-minute browser puzzle game: your shadow replays your movement two seconds late, and you have to use it — and avoid it."
     />
 
     <!--
@@ -20,21 +20,16 @@ import "../styles/styles.css";
     <meta property="og:type" content="website" />
     <meta property="og:image" content="./card.png" />
     <meta name="twitter:card" content="summary_large_image" />
-
-
   </head>
   <body>
     <header>
       <nav aria-label="Primary">
-        <a href="./">Home</a>
+        <a href="./">Shadow Copy</a>
       </nav>
     </header>
     <main>
-      <h1>COMP4020 prototype</h1>
-      <p>
-        Replace this with your prototype. This week's brief is on the course website;
-        <code>spec/README.md</code> explains how the checks in this repo relate to it.
-      </p>
+      <h1 class="visually-hidden">Shadow Copy</h1>
+      <canvas id="game" aria-label="Shadow Copy game"></canvas>
     </main>
     <script src="../scripts/main.ts"></script>
   </body>

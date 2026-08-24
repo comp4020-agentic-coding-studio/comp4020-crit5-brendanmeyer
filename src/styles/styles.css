@@ -1,16 +1,67 @@
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
 body {
+  height: 100%;
   margin: 0;
-  padding: 2rem;
+}
+
+body {
+  background: #05070d;
+  color: #e8ecf7;
   font-family: system-ui, sans-serif;
-  line-height: 1.6;
-  color: #1a1a1a;
+  overflow: hidden;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+header {
+  position: fixed;
+  top: 0.75rem;
+  left: 1rem;
+  z-index: 2;
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+}
+
+header:hover,
+header:focus-within {
+  opacity: 1;
+}
+
+nav a {
+  color: #8fd8ff;
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
 }
 
 main {
-  max-width: 40rem;
-  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-a {
-  color: #0b5fff;
+#game {
+  display: block;
+  background: #0a0e1a;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(143, 216, 255, 0.08), 0 20px 60px rgba(0, 0, 0, 0.6);
 }
