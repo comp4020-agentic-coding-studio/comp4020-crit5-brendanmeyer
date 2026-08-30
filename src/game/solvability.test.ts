@@ -88,12 +88,165 @@ describe("room solvability", () => {
     expect(result.phase).toBe("roomComplete");
   });
 
-  it("room 6: the full final sequence, including a hazard dodge, ends the game", () => {
+  it("room 6: the combo room's plate/gate/hazard sequence completes", () => {
     const result = play(rooms[5], [
       { input: RIGHT, durationMs: 1700 },
       { input: UP, durationMs: 250 },
       { input: RIGHT, durationMs: 10000 },
     ]);
+    expect(result.phase).toBe("roomComplete");
+  });
+
+  it("room 7: threshold — a hazard sits between two independent bump-and-waits", () => {
+    const result = play(rooms[6], [
+      { input: RIGHT, durationMs: 1700 },
+      { input: UP, durationMs: 269 },
+      { input: RIGHT, durationMs: 9000 },
+    ]);
+    expect(result.phase).toBe("roomComplete");
+  });
+
+  it("room 7: rushing straight through without dodging hits the hazard", () => {
+    const result = play(rooms[6], [{ input: RIGHT, durationMs: 9000 }]);
+    expect(result.phase).toBe("resetting");
+  });
+
+  it("room 8: shielded plate — the AND-gate timing and the hazard dodge must be solved together", () => {
+    const result = play(rooms[7], [
+      { input: UP, durationMs: 269 },
+      { input: RIGHT, durationMs: 9000 },
+    ]);
+    expect(result.phase).toBe("roomComplete");
+  });
+
+  it("room 8: rushing straight through without dodging hits the hazard", () => {
+    const result = play(rooms[7], [{ input: RIGHT, durationMs: 9000 }]);
+    expect(result.phase).toBe("resetting");
+  });
+
+  it("room 9: guarded return — the far plate and a plate beside the gate must both be active on the way back", () => {
+    const result = play(rooms[8], [
+      { input: UP, durationMs: 950 },
+      { input: RIGHT, durationMs: 950 },
+      { input: LEFT, durationMs: 700 },
+      { input: UP, durationMs: 600 },
+      { input: LEFT, durationMs: 500 },
+      { input: DOWN, durationMs: 600 },
+      { input: LEFT, durationMs: 6000 },
+    ]);
+    expect(result.phase).toBe("roomComplete");
+  });
+
+  it("room 9: rushing straight back resets on the shadow", () => {
+    const result = play(rooms[8], [
+      { input: UP, durationMs: 950 },
+      { input: RIGHT, durationMs: 950 },
+      { input: LEFT, durationMs: 5000 },
+    ]);
+    expect(result.phase).toBe("resetting");
+  });
+
+  it("room 10: second branch — the plate now sits past the junction, so the shadow crosses it later", () => {
+    const result = play(rooms[9], [
+      { input: RIGHT, durationMs: 4600 },
+      { input: LEFT, durationMs: 800 },
+      { input: UP, durationMs: 6000 },
+    ]);
+    expect(result.phase).toBe("roomComplete");
+  });
+
+  it("room 11: needle's eye — weaving through staggered hazards to the plate and gate", () => {
+    const result = play(rooms[10], [
+      { input: RIGHT, durationMs: 375 },
+      { input: DOWN, durationMs: 281 },
+      { input: RIGHT, durationMs: 563 },
+      { input: UP, durationMs: 531 },
+      { input: RIGHT, durationMs: 813 },
+      { input: DOWN, durationMs: 531 },
+      { input: RIGHT, durationMs: 625 },
+      { input: UP, durationMs: 531 },
+      { input: RIGHT, durationMs: 6000 },
+    ]);
+    expect(result.phase).toBe("roomComplete");
+  });
+
+  it("room 11: rushing straight through the hazard row resets", () => {
+    const result = play(rooms[10], [{ input: RIGHT, durationMs: 12000 }]);
+    expect(result.phase).toBe("resetting");
+  });
+
+  it("room 12: chain run — a wait, then a hazard, then a two-plate AND-gate, back to back", () => {
+    const result = play(rooms[11], [
+      { input: RIGHT, durationMs: 1450 },
+      { input: UP, durationMs: 269 },
+      { input: RIGHT, durationMs: 9000 },
+    ]);
+    expect(result.phase).toBe("roomComplete");
+  });
+
+  it("room 12: rushing straight through without dodging hits the hazard", () => {
+    const result = play(rooms[11], [{ input: RIGHT, durationMs: 9000 }]);
+    expect(result.phase).toBe("resetting");
+  });
+
+  it("room 13: figure eight — the intended route crosses the player's own path twice", () => {
+    const result = play(rooms[12], [
+      { input: UP, durationMs: 950 },
+      { input: RIGHT, durationMs: 950 },
+      { input: LEFT, durationMs: 700 },
+      { input: UP, durationMs: 600 },
+      { input: LEFT, durationMs: 500 },
+      { input: DOWN, durationMs: 600 },
+      { input: LEFT, durationMs: 6000 },
+    ]);
+    expect(result.phase).toBe("roomComplete");
+  });
+
+  it("room 13: rushing the naive route resets on the shadow", () => {
+    const result = play(rooms[12], [
+      { input: UP, durationMs: 950 },
+      { input: RIGHT, durationMs: 950 },
+      { input: LEFT, durationMs: 6000 },
+    ]);
+    expect(result.phase).toBe("resetting");
+  });
+
+  it("room 14: after the door — the hazard is the last obstacle, not the first", () => {
+    const result = play(rooms[13], [
+      { input: RIGHT, durationMs: 2200 },
+      { input: UP, durationMs: 269 },
+      { input: RIGHT, durationMs: 6000 },
+    ]);
+    expect(result.phase).toBe("roomComplete");
+  });
+
+  it("room 14: rushing straight through without dodging hits the hazard", () => {
+    const result = play(rooms[13], [{ input: RIGHT, durationMs: 9000 }]);
+    expect(result.phase).toBe("resetting");
+  });
+
+  it("room 15: gauntlet — an AND-gate followed by a two-hazard weave", () => {
+    const result = play(rooms[14], [
+      { input: RIGHT, durationMs: 2400 },
+      { input: DOWN, durationMs: 281 },
+      { input: RIGHT, durationMs: 1331 },
+      { input: UP, durationMs: 531 },
+      { input: RIGHT, durationMs: 6000 },
+    ]);
+    expect(result.phase).toBe("roomComplete");
+  });
+
+  it("room 16: the last door — the full final sequence, including a hazard weave, ends the game", () => {
+    const result = play(rooms[15], [
+      { input: RIGHT, durationMs: 1200 },
+      { input: UP, durationMs: 269 },
+      { input: RIGHT, durationMs: 6000 },
+    ]);
     expect(result.phase).toBe("gameComplete");
+  });
+
+  it("room 16: rushing straight through the hazard weave resets", () => {
+    const result = play(rooms[15], [{ input: RIGHT, durationMs: 14000 }]);
+    expect(result.phase).toBe("resetting");
   });
 });
