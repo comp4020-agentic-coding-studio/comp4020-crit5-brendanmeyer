@@ -104,6 +104,44 @@ describe("collision", () => {
   });
 });
 
+describe("gate closing", () => {
+  it("resets the room when a gate swings shut while the player's center is still inside it", () => {
+    const rooms: RoomDef[] = [
+      makeRoom({
+        spawn: { x: 140, y: 250 },
+        plates: [{ id: "p1", rect: { x: 100, y: 230, w: 50, h: 40 } }],
+        gates: [{ id: "g1", rect: { x: 160, y: 230, w: 10, h: 40 }, requiredPlateIds: ["p1"] }],
+      }),
+    ];
+    let state = createInitialState(rooms);
+
+    // Stand still for a tick so the gate reads as open while the player is
+    // still on the plate.
+    state = stepGame(state, rooms, { x: 0, y: 0 }, 1);
+    expect(state.gateOpen.g1).toBe(true);
+
+    // One big step carries the player straight off the plate and into the
+    // gate's footprint in a single tick: movement resolves against last
+    // tick's open gate (so nothing blocks it), but the plate is no longer
+    // held by the new position, so the gate reads closed with the player's
+    // center still inside it.
+    state = stepGame(state, rooms, { x: 1, y: 0 }, 156.25);
+    expect(state.phase).toBe("resetting");
+  });
+
+  it("does not reset when the player simply bumps into a still-closed gate", () => {
+    const rooms: RoomDef[] = [
+      makeRoom({
+        spawn: { x: 60, y: 250 },
+        gates: [{ id: "g1", rect: { x: 160, y: 230, w: 10, h: 40 }, requiredPlateIds: ["unreachable"] }],
+      }),
+    ];
+    let state = createInitialState(rooms);
+    for (let i = 0; i < 100; i++) state = stepGame(state, rooms, { x: 1, y: 0 }, 16);
+    expect(state.phase).toBe("playing");
+  });
+});
+
 describe("pressure plates and gates", () => {
   const plate: PlateDef = { id: "p1", rect: { x: 100, y: 100, w: 50, h: 50 } };
   const gate: GateDef = { id: "g1", rect: { x: 0, y: 0, w: 0, h: 0 }, requiredPlateIds: ["p1"] };

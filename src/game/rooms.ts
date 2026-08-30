@@ -208,7 +208,7 @@ const room9: RoomDef = {
   ],
   plates: [
     { id: "p9", rect: { x: 740, y: 225, w: 100, h: 60 } },
-    { id: "p9b", rect: { x: 665, y: 205, w: 70, h: 100 } },
+    { id: "p9b", rect: { x: 620, y: 205, w: 115, h: 100 } },
   ],
   gates: [
     {

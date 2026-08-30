@@ -156,6 +156,13 @@ export function stepGame(state: GameState, rooms: RoomDef[], input: InputVector,
 
   const hitHazard = room.hazards.some((h) => circleRectOverlap(player, PLAYER_RADIUS, h.rect));
   const hitShadow = shadowAlive && distance(player, shadow) < PLAYER_RADIUS * 2;
+  // Caught mid-crossing when a gate swings shut again: only true while the
+  // player's *center* is inside the doorway, which is only reachable while
+  // it was open — bumping against the outside face of a closed gate never
+  // puts the center past its edge, so that never counts as being closed on.
+  const closedOnPlayer = room.gates.some(
+    (g) => state.gateOpen[g.id] && !gateOpen[g.id] && pointInRect(player, g.rect),
+  );
 
   const base: GameState = {
     ...state,
@@ -168,7 +175,7 @@ export function stepGame(state: GameState, rooms: RoomDef[], input: InputVector,
     gateOpen,
   };
 
-  if (hitHazard || hitShadow) {
+  if (hitHazard || hitShadow || closedOnPlayer) {
     return { ...base, phase: "resetting", transitionRemainingMs: RESET_FLASH_MS };
   }
 
