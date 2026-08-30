@@ -1,5 +1,5 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../game/constants";
-import { createInitialState, stepGame } from "../game/engine";
+import { createInitialState, resolveStartRoomIndex, stepGame } from "../game/engine";
 import { rooms } from "../game/rooms";
 import type { InputVector } from "../game/types";
 import { render } from "./renderer";
@@ -46,7 +46,8 @@ function currentInput(): InputVector {
   return { x, y };
 }
 
-let state = createInitialState(rooms);
+const startRoomIndex = resolveStartRoomIndex(new URLSearchParams(window.location.search).get("room"), rooms.length);
+let state = createInitialState(rooms, startRoomIndex);
 let lastTime: number | null = null;
 const MAX_DT_MS = 50;
 

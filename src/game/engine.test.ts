@@ -1,6 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { PLAYER_RADIUS, SHADOW_DELAY_MS } from "./constants";
-import { circleRectOverlap, computeGateOpen, computePlateActive, createInitialState, moveCircle, stepGame } from "./engine";
+import {
+  circleRectOverlap,
+  computeGateOpen,
+  computePlateActive,
+  createInitialState,
+  moveCircle,
+  resolveStartRoomIndex,
+  stepGame,
+} from "./engine";
 import { sampleHistory } from "./history";
 import type { GateDef, HistorySample, PlateDef, RoomDef } from "./types";
 
@@ -162,6 +170,34 @@ describe("room completion", () => {
     expect(state.phase).toBe("roomComplete");
     state = stepGame(state, rooms, { x: 0, y: 0 }, 1000);
     expect(state.phase).toBe("gameComplete");
+  });
+});
+
+describe("debug room skip", () => {
+  it("resolves a 1-indexed ?room= value to a 0-indexed room index", () => {
+    expect(resolveStartRoomIndex("3", 16)).toBe(2);
+  });
+
+  it("falls back to the first room when the param is missing or unparseable", () => {
+    expect(resolveStartRoomIndex(null, 16)).toBe(0);
+    expect(resolveStartRoomIndex("not-a-number", 16)).toBe(0);
+  });
+
+  it("clamps out-of-range values into the valid room range", () => {
+    expect(resolveStartRoomIndex("0", 16)).toBe(0);
+    expect(resolveStartRoomIndex("-5", 16)).toBe(0);
+    expect(resolveStartRoomIndex("999", 16)).toBe(15);
+  });
+
+  it("createInitialState spawns directly into the requested room", () => {
+    const rooms: RoomDef[] = [
+      makeRoom({ id: "a", spawn: { x: 10, y: 10 } }),
+      makeRoom({ id: "b", spawn: { x: 20, y: 20 } }),
+      makeRoom({ id: "c", spawn: { x: 30, y: 30 } }),
+    ];
+    const state = createInitialState(rooms, 2);
+    expect(state.roomIndex).toBe(2);
+    expect(state.player).toEqual(rooms[2].spawn);
   });
 });
 

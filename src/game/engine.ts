@@ -81,8 +81,20 @@ export function computeGateOpen(gates: GateDef[], plateActive: Record<string, bo
   return result;
 }
 
-export function createInitialState(rooms: RoomDef[]): GameState {
-  return spawnState(rooms, 0);
+export function createInitialState(rooms: RoomDef[], startRoomIndex = 0): GameState {
+  return spawnState(rooms, clamp(startRoomIndex, 0, rooms.length - 1));
+}
+
+/**
+ * Parses a 1-indexed `?room=N` query value into a 0-indexed room index,
+ * clamped to a valid range. Returns 0 (the first room) for anything missing
+ * or unparseable, so a malformed/absent query param is a silent no-op.
+ */
+export function resolveStartRoomIndex(roomParam: string | null, roomCount: number): number {
+  if (roomParam === null) return 0;
+  const parsed = Number.parseInt(roomParam, 10);
+  if (!Number.isFinite(parsed)) return 0;
+  return clamp(parsed - 1, 0, roomCount - 1);
 }
 
 function spawnState(rooms: RoomDef[], roomIndex: number): GameState {
