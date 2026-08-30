@@ -191,7 +191,8 @@ const room8: RoomDef = {
 // single gate is now an AND-gate: it needs the far plate touched on the way
 // out (p9) *and* a second plate parked beside the gate on the way back
 // (p9b). The shadow-dodge and the plate-timing puzzle now have to be solved
-// together, not one then the other.
+// together, not one then the other. The hardest single room in the game —
+// it closes it out.
 const ROOM9_TOP = 190;
 const ROOM9_BOTTOM = 310;
 const ROOM9_GATE_X = 640;
@@ -219,6 +220,7 @@ const room9: RoomDef = {
   hazards: [],
   spawn: { x: 705, y: 400 },
   exit: { x: 440, y: 200, w: 60, h: 100 },
+  isFinal: true,
 };
 
 // Room 10 — Second branch. Room 5's shape again (bottom corridor, branch up
@@ -355,9 +357,8 @@ const room15: RoomDef = {
   exit: { x: 850, y: 190, w: 40, h: 120 },
 };
 
-// Room 16 — The last door. The hardest combination: a multi-plate AND-gate,
-// a hazard weave, and a shadow-crossing dodge, at the largest scale of the
-// game. Ends the game on completion.
+// Room 16 — The last door. A big combination: a multi-plate AND-gate and a
+// hazard weave, at the largest corridor scale in the game.
 const room16: RoomDef = {
   id: "the-last-door",
   bounds: FULL_BOUNDS,
@@ -381,24 +382,29 @@ const room16: RoomDef = {
   ],
   spawn: { x: 60, y: 250 },
   exit: { x: 850, y: 190, w: 40, h: 120 },
-  isFinal: true,
 };
 
+// Play order is a difficulty ramp, not declaration order above: rooms
+// introduce their mechanics in the order they're defined (room1..room16),
+// but some later-declared rooms (like room14's plain bump-and-wait) are
+// easier in practice than earlier ones (like room9's combined dodge+timing
+// return trip), so the exported order re-sorts them roughly easiest to
+// hardest, ending on room9 as the capstone.
 export const rooms: RoomDef[] = [
   room1,
   room2,
+  room14,
   room3,
+  room7,
   room4,
   room5,
-  room6,
-  room7,
-  room8,
-  room9,
   room10,
+  room6,
+  room8,
   room11,
   room12,
   room13,
-  room14,
   room15,
   room16,
+  room9,
 ];
