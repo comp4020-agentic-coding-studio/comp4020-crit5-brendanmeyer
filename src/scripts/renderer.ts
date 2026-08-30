@@ -162,11 +162,14 @@ function drawExit(ctx: CanvasRenderingContext2D, room: RoomDef, timeMs: number, 
     ctx.globalAlpha = 1;
   }
 
-  const gradient = ctx.createRadialGradient(cx, cy, 4, cx, cy, Math.max(w, h) * 0.9 * pulse);
+  const glowRadius = Math.max(w, h) * 0.9 * pulse;
+  const gradient = ctx.createRadialGradient(cx, cy, 4, cx, cy, glowRadius);
   gradient.addColorStop(0, "rgba(255, 224, 138, 0.9)");
   gradient.addColorStop(1, "rgba(255, 224, 138, 0)");
   ctx.fillStyle = gradient;
-  ctx.fillRect(x - 30, y - 30, w + 60, h + 60);
+  ctx.beginPath();
+  ctx.arc(cx, cy, glowRadius, 0, Math.PI * 2);
+  ctx.fill();
 
   ctx.fillStyle = COLORS.exit;
   roundRect(ctx, x, y, w, h, 8);
